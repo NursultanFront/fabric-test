@@ -1,9 +1,11 @@
 <template>
-  <Header />
+  <Search />
+  <ListImage />
 </template>
 
 <script lang="ts" setup>
-import Header from '@/components/the-header.vue';
+import Search from '@/components/search/the-search.vue';
+import ListImage from '@/components/list-image/list-image.vue';
 </script>
 
 <style></style>

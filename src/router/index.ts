@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/the-home.vue';
+import Favorite from '../views/the-favorite.vue';
+import OneImage from '@/views/one-image.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,10 +14,12 @@ const router = createRouter({
     {
       path: '/favorite',
       name: 'favorite',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/the-favorite.vue'),
+      component: Favorite,
+    },
+    {
+      path: '/one-image/:id',
+      name: 'one-image',
+      component: OneImage,
     },
   ],
 });
