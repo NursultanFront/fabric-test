@@ -1,11 +1,35 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
+import { api } from '@/api/indext';
+
+import { useImageStore, type ImageItem } from '@/stores/images';
 
 interface Props {
   id: string;
 }
 
+const imageItem = ref<ImageItem>({
+  id: '',
+  username: '',
+  img: '',
+  socials: '',
+  download: '',
+});
+
 const props = defineProps<Props>();
+const store = useImageStore();
+
+onMounted(async () => {
+  const res = await api.images.oneImage(props.id);
+
+  imageItem.value = {
+    download: res.links.download,
+    img: res.urls.raw,
+    socials: res.user.twitter_username ?? res.user.instagram_username,
+    username: res.user.name,
+    id: res.id,
+  };
+});
 </script>
 
 <template>
@@ -18,13 +42,22 @@ const props = defineProps<Props>();
           </div>
 
           <div class="one-image__action">
-            <button class="one-image__btn">Избранное</button>
+            <button
+              class="one-image__btn"
+              @click="
+                () => {
+                  store.putFavorite(imageItem);
+                }
+              "
+            >
+              Избранное
+            </button>
             <button class="one-image__download">Загрузить</button>
           </div>
         </div>
 
         <div class="one-image__content">
-          <img src="@/assets/photo.png" alt="image" />
+          <img :src="imageItem.img" alt="image" />
         </div>
       </div>
     </div>

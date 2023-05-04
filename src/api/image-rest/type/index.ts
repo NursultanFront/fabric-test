@@ -4,6 +4,7 @@ export interface Image {
   alt_description: string;
   links: Links;
   user: User;
+  urls: Urls;
 }
 
 export interface ImageSearch {
@@ -14,6 +15,7 @@ export interface ImageSearch {
 
 interface Links {
   download: string;
+  html: string;
 }
 interface User {
   id: string;
@@ -37,4 +39,13 @@ interface Social {
   portfolio_url: string | null;
   twitter_username: string | null;
   paypal_email: string | null;
+}
+
+interface Urls {
+  raw: string;
+  full: string;
+  regular: string;
+  small: string;
+  thumb: string;
+  small_s3: string;
 }

@@ -3,15 +3,22 @@
     <div class="container">
       <div class="favorite__wrapper">
         <h2 class="favorite__title">Избранное</h2>
-        <ul class="favorite__list">
-          <li class="favorite__item"></li>
+        <p v-if="favorite.length == 0">Здесь пока ничего нет</p>
+        <ul v-else class="favorite__list">
+          <li class="favorite__item" v-for="item of favorite" :key="item.id">
+            <img :src="item.img" alt="" />
+          </li>
         </ul>
       </div>
     </div>
   </main>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useImageStore } from '@/stores/images';
+
+const { favorite } = useImageStore();
+</script>
 
 <style scoped lang="scss">
 .favorite {

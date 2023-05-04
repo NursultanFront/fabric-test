@@ -8,7 +8,7 @@ export class ImageRest extends BasicRest {
     super(endpoint);
   }
 
-  public list(params?: { page: number; per_page: number }) {
+  public list(params?: { page?: number; per_page: number }) {
     return this.getRequest<Image[]>('/photos', params);
   }
 
@@ -21,6 +21,6 @@ export class ImageRest extends BasicRest {
     page?: number;
     per_page?: number;
   }) {
-    return this.getRequest<ImageSearch>(`/photos/`, params);
+    return this.getRequest<ImageSearch>(`/search/photos`, params);
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <Search />
-  <ListImage />
+  <ListImage :list="store.imagesList" />
 </template>
 
 <script lang="ts" setup>
@@ -11,6 +11,9 @@ import { useImageStore } from '@/stores/images';
 
 const store = useImageStore();
 
+onMounted(() => {
+  store.getRandomImage();
+});
 </script>
 
 <style></style>
