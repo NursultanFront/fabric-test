@@ -12,9 +12,17 @@
           <img src="@/assets/logo.png" alt="Logo" :width="widthLogo" />
         </RouterLink>
 
-        <RouterLink class="header__favorite" to="/favorite">
-          <span>Избранное</span>
-        </RouterLink>
+        <nav class="header__nav nav">
+          <RouterLink to="/" class="nav__link" v-if="!isSearch">
+            <LoupeWhite />
+            <span>Поиск</span>
+          </RouterLink>
+
+          <RouterLink to="/favorite" class="nav__link">
+            <FavoriteWhiteIcon />
+            <span>Избранное</span>
+          </RouterLink>
+        </nav>
       </div>
     </div>
     <Search v-if="isSearch"></Search>
@@ -28,6 +36,9 @@ import { RouterLink, useRoute } from 'vue-router';
 import { Routes } from '@/router/route';
 
 import Search from '../search/the-search.vue';
+
+import FavoriteWhiteIcon from '../icons/FavoriteWhiteIcon.vue';
+import LoupeWhite from '../icons/LoupeWhite.vue';
 
 const route = useRoute();
 
@@ -82,8 +93,24 @@ watch(
   &__logo--other {
   }
 
+  &__nav {
+    & > * {
+      color: var(--vt-c-white);
+    }
+  }
+
   &__favorite {
-    color: var(--vt-c-white);
+  }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 38px;
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: 9px;
   }
 }
 </style>
