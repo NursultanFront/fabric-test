@@ -1,4 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted } from 'vue';
+
+interface Props {
+  id: string;
+}
+
+const props = defineProps<Props>();
+</script>
 
 <template>
   <main class="one-image">

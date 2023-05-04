@@ -3,7 +3,7 @@
     <div class="container">
       <div class="header__wrapper">
         <RouterLink to="/" class="header__logo">
-          <img src="@/assets/logo.png" alt="Logo" />
+          <img src="@/assets/logo.png" alt="Logo" :width="width" />
         </RouterLink>
 
         <RouterLink class="header__favorite" to="/favorite">
@@ -16,7 +16,22 @@
 </template>
 
 <script setup lang="ts">
-import type { RouterLink } from 'vue-router';
+import { watch, ref } from 'vue';
+import { RouterLink, useRoute } from 'vue-router';
+
+const width = ref<number>(0);
+const route = useRoute();
+
+watch(
+  () => route.name,
+  (value) => {
+    if (value == 'home') {
+      width.value = 185;
+    } else {
+      width.value = 112;
+    }
+  }
+);
 </script>
 
 <style scoped lang="scss">
