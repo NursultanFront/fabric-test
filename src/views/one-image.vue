@@ -24,7 +24,7 @@ onMounted(async () => {
 
   imageItem.value = {
     download: res.links.download,
-    img: res.urls.raw,
+    img: res.urls.regular,
     socials: res.user.twitter_username ?? res.user.instagram_username,
     username: res.user.name,
     id: res.id,
@@ -82,10 +82,11 @@ onMounted(async () => {
 
   &__content {
     display: flex;
+    justify-content: center;
 
+    max-height: 800px;
     img {
-      width: 100%;
-      height: 100%;
+      object-fit: contain;
     }
   }
 }

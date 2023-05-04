@@ -1,8 +1,12 @@
 <template>
   <main class="list-image">
     <div class="container">
-      <ul class="list-image__wrapper">
-        <li class="list-image__item" v-for="item of props.list" :key="item.id">
+      <ul class="list-image__wrapper grid-wrapper">
+        <li
+          class="list-image__item grid-wrapper__item"
+          v-for="item of props.list"
+          :key="item.id"
+        >
           <RouterLink :to="{ name: Routes.ONEIMAGE, params: { id: item.id } }">
             <img
               :src="item.urls.small"
@@ -31,19 +35,9 @@ const props = defineProps<Props>();
 .list-image {
   &__wrapper {
     padding: 114px 0;
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 30px;
   }
 
   &__item {
-    grid-column: span 4 / span 4;
-    border-radius: 8px;
-    height: 453px;
-
-    img {
-      border-radius: 8px;
-    }
   }
 }
 </style>

@@ -1,5 +1,4 @@
 <template>
-  <Search />
   <ListImage :list="store.imagesList" />
 </template>
 

@@ -3,10 +3,16 @@
     <div class="container">
       <div class="favorite__wrapper">
         <h2 class="favorite__title">Избранное</h2>
-        <p v-if="favorite.length == 0">Здесь пока ничего нет</p>
-        <ul v-else class="favorite__list">
-          <li class="favorite__item" v-for="item of favorite" :key="item.id">
-            <img :src="item.img" alt="" />
+        <p v-if="favorite.length == 0" class="favorite__nothing">
+          Здесь пока ничего нет
+        </p>
+        <ul v-else class="favorite__list grid-wrapper">
+          <li
+            class="favorite__item grid-wrapper__item"
+            v-for="item of favorite"
+            :key="item.id"
+          >
+            <img :src="item.img" :alt="item.username" />
           </li>
         </ul>
       </div>
@@ -36,14 +42,14 @@ const { favorite } = useImageStore();
     color: var(--vt-c-black);
   }
 
+  &__nothing {
+    text-align: center;
+  }
+
   &__list {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 30px;
   }
 
   &__item {
-    grid-column: span 4 / span 4;
   }
 }
 </style>
