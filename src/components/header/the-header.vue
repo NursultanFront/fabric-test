@@ -18,6 +18,7 @@
 <script setup lang="ts">
 import { watch, ref } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
+import { Routes } from '@/router/route';
 
 const width = ref<number>(0);
 const route = useRoute();
@@ -25,7 +26,7 @@ const route = useRoute();
 watch(
   () => route.name,
   (value) => {
-    if (value == 'home') {
+    if (value == Routes.HOME) {
       width.value = 185;
     } else {
       width.value = 112;
