@@ -1,7 +1,7 @@
 import { BasicRest } from '../basic-rest';
 
 import type { AxiosInstance } from 'axios';
-import type { Image } from './type';
+import type { Image, ImageSearch } from './type';
 
 export class ImageRest extends BasicRest {
   constructor(endpoint: AxiosInstance) {
@@ -13,6 +13,14 @@ export class ImageRest extends BasicRest {
   }
 
   public oneImage(id: string) {
-    return this.getRequest<Image>(`/photo${id}`);
+    return this.getRequest<Image>(`/photos/${id}`);
+  }
+
+  public searchImages(params: {
+    query: string;
+    page?: number;
+    per_page?: number;
+  }) {
+    return this.getRequest<ImageSearch>(`/photos/`, params);
   }
 }

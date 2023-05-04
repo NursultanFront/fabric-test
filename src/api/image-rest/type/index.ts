@@ -6,11 +6,16 @@ export interface Image {
   user: User;
 }
 
-export interface Links {
-  download: string;
+export interface ImageSearch {
+  total: number;
+  total_pages: number;
+  results: Image[];
 }
 
-export interface User {
+interface Links {
+  download: string;
+}
+interface User {
   id: string;
   name: string;
   first_name: string;
@@ -21,13 +26,13 @@ export interface User {
   social: Social;
 }
 
-export interface ProfileImage {
+interface ProfileImage {
   small: string;
   medium: string;
   large: string;
 }
 
-export interface Social {
+interface Social {
   instagram_username: string;
   portfolio_url: string | null;
   twitter_username: string | null;
