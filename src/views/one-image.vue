@@ -15,6 +15,9 @@ interface Props {
 const props = defineProps<Props>();
 const store = useImageStore();
 
+const isError = ref<boolean>(false);
+const isLoaded = ref<boolean>(false);
+
 const imageItem = ref<OneImage>({
   id: '',
   username: '',
@@ -63,20 +66,28 @@ const downloadPhoto = async () => {
 };
 
 onMounted(async () => {
-  const res = await api.images.oneImage(props.id);
+  try {
+    isLoaded.value = true;
+    const res = await api.images.oneImage(props.id);
 
-  imageItem.value = {
-    download: res.links.download,
-    img: res.urls.regular,
-    socials: res.user.twitter_username ?? res.user.instagram_username,
-    username: res.user.name,
-    id: res.id,
-    userThumbnail: res.user.profile_image.medium,
-    portfolioLink: res.user.social.portfolio_url ?? '',
-    isFavorite: store.favorite.some((item) => {
-      return item.id == res.id;
-    }),
-  };
+    imageItem.value = {
+      download: res.links.download,
+      img: res.urls.regular,
+      socials: res.user.twitter_username ?? res.user.instagram_username,
+      username: res.user.name,
+      id: res.id,
+      userThumbnail: res.user.profile_image.medium,
+      portfolioLink: res.user.social.portfolio_url ?? '',
+      isFavorite: store.favorite.some((item) => {
+        return item.id == res.id;
+      }),
+    };
+  } catch (error) {
+    isError.value = true;
+  } finally {
+    isError.value = false;
+    isLoaded.value = false;
+  }
 });
 </script>
 
@@ -85,16 +96,13 @@ onMounted(async () => {
     <div class="container">
       <div class="one-image__wrapper">
         <div class="one-image__header">
-          <div v-if="store.isLoaded" class="loading">Loading</div>
-          <div
-            v-else-if="!store.isError && !store.isLoaded"
-            class="one-image__box"
-          >
+          <div v-if="isLoaded" class="loading">Loading</div>
+          <div v-else-if="!isError && !isLoaded" class="one-image__box">
             <img :src="imageItem.userThumbnail" alt="User" />
             <h2>{{ imageItem.username }}</h2>
             <a :href="imageItem.portfolioLink">@{{ imageItem.socials }}</a>
           </div>
-          <div v-else-if="store.isError" class="error">Error</div>
+          <div v-else-if="isError" class="error">Error</div>
 
           <div class="one-image__action">
             <button
