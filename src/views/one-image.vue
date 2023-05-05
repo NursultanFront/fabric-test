@@ -6,7 +6,6 @@ import { useImageStore, type OneImage } from '@/stores/images';
 import FavoriteBlackIcon from '@/components/icons/FavoriteBlackIcon.vue';
 import FavoriteYellowIcon from '@/components/icons/FavoriteYellowIcon.vue';
 import DownloadIcon from '@/components/icons/DownloadIcon.vue';
-import LoadingIcon from '@/components/icons/LoadingIcon.vue';
 import axios from 'axios';
 
 interface Props {
@@ -74,7 +73,9 @@ onMounted(async () => {
     id: res.id,
     userThumbnail: res.user.profile_image.medium,
     portfolioLink: res.user.social.portfolio_url ?? '',
-    isFavorite: store.favorite.some((item) => item.isFavorite),
+    isFavorite: store.favorite.some((item) => {
+      return item.id == res.id;
+    }),
   };
 });
 </script>
@@ -84,7 +85,7 @@ onMounted(async () => {
     <div class="container">
       <div class="one-image__wrapper">
         <div class="one-image__header">
-          <div v-if="store.isLoaded" class="loading" >Loading</div>
+          <div v-if="store.isLoaded" class="loading">Loading</div>
           <div
             v-else-if="!store.isError && !store.isLoaded"
             class="one-image__box"
@@ -93,7 +94,7 @@ onMounted(async () => {
             <h2>{{ imageItem.username }}</h2>
             <a :href="imageItem.portfolioLink">@{{ imageItem.socials }}</a>
           </div>
-          <div v-else-if="store.isError" class="error" >Error</div>
+          <div v-else-if="store.isError" class="error">Error</div>
 
           <div class="one-image__action">
             <button
