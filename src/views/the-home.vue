@@ -1,5 +1,9 @@
 <template>
-  <ListImage :list="store.imagesList" />
+  <ListImage
+    :list="store.imagesList"
+    :error="store.isError"
+    :loading="store.isLoaded"
+  />
 </template>
 
 <script lang="ts" setup>

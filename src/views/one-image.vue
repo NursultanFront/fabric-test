@@ -6,7 +6,7 @@ import { useImageStore, type OneImage } from '@/stores/images';
 import FavoriteBlackIcon from '@/components/icons/FavoriteBlackIcon.vue';
 import FavoriteYellowIcon from '@/components/icons/FavoriteYellowIcon.vue';
 import DownloadIcon from '@/components/icons/DownloadIcon.vue';
-
+import LoadingIcon from '@/components/icons/LoadingIcon.vue';
 import axios from 'axios';
 
 interface Props {
@@ -84,11 +84,16 @@ onMounted(async () => {
     <div class="container">
       <div class="one-image__wrapper">
         <div class="one-image__header">
-          <div class="one-image__box">
+          <div class="loading" v-if="store.isLoaded">Loading</div>
+          <div
+            v-else-if="!store.isError && !store.isLoaded"
+            class="one-image__box"
+          >
             <img :src="imageItem.userThumbnail" alt="User" />
-            <h2 class="title">{{ imageItem.username }}</h2>
+            <h2>{{ imageItem.username }}</h2>
             <a :href="imageItem.portfolioLink">@{{ imageItem.socials }}</a>
           </div>
+          <div class="error" v-else-if="store.isError">Error</div>
 
           <div class="one-image__action">
             <button
@@ -108,7 +113,14 @@ onMounted(async () => {
         </div>
 
         <div class="one-image__content">
-          <img :src="imageItem.img" alt="image" />
+          <img
+            v-if="!store.isError && !store.isLoaded"
+            :src="imageItem.img"
+            alt="image"
+          />
+
+          <p class="loading" v-else-if="store.isLoaded">Loading</p>
+          <p class="Error" v-else-if="store.isError">Error</p>
         </div>
       </div>
     </div>
@@ -120,7 +132,7 @@ onMounted(async () => {
   background-image: url('@/assets/favorite-back.png');
   background-repeat: no-repeat;
   background-position: top center;
-  background-size: contain;
+  background-size: auto;
   &__wrapper {
     padding: 41px 0 109px;
   }
@@ -134,9 +146,12 @@ onMounted(async () => {
   &__content {
     display: flex;
     justify-content: center;
+    border-radius: 8px;
 
     max-height: 800px;
     img {
+      border-radius: 8px;
+      width: 100%;
       object-fit: contain;
     }
   }
@@ -197,6 +212,70 @@ onMounted(async () => {
       font-size: 20px;
       line-height: 23px;
       color: var(--vt-c-black);
+    }
+  }
+
+  .loading,
+  .error {
+    color: #f2f2f2;
+  }
+}
+</style>
+
+<style scoped lang="scss">
+@media (max-width: 1024px) {
+  .one-image {
+    &__wrapper {
+      padding: 31px 0 60px;
+    }
+
+    &__content {
+      max-height: 600px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .one-image {
+    background-image: none;
+
+    &__content {
+      img {
+        object-fit: cover;
+      }
+    }
+
+    &__download {
+      padding: 7px 7px;
+      span {
+        display: none;
+      }
+    }
+
+    &__box {
+      h2 {
+        font-size: 18px;
+        color: #000000;
+      }
+      a {
+        font-size: 14px;
+        color: #bdbdbd;
+      }
+    }
+
+    .loading,
+    .error {
+      color: #000000;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .one-image {
+    background-image: none;
+
+    &__content {
+      max-height: 321px;
     }
   }
 }

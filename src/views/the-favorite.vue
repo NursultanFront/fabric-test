@@ -34,7 +34,7 @@ const { favorite } = useImageStore();
 <style scoped lang="scss">
 .favorite {
   &__wrapper {
-    padding: 94px 107px;
+    padding: 94px 0 107px;
   }
 
   &__title {
@@ -50,11 +50,25 @@ const { favorite } = useImageStore();
   &__nothing {
     text-align: center;
   }
+}
+</style>
 
-  &__list {
-  }
+<style scoped lang="scss">
+@media (max-width: 768px) {
+  .favorite {
+    &__wrapper {
+      padding: 50px 0 60px;
+    }
 
-  &__item {
+    &__title {
+      margin: 0 0 50px;
+      font-size: 36px;
+      line-height: 120%;
+    }
+
+    &__nothing {
+      text-align: center;
+    }
   }
 }
 </style>

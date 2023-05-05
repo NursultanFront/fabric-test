@@ -15,35 +15,57 @@ export interface OneImage {
 }
 
 export const useImageStore = defineStore('images', () => {
+  const isLoaded = ref<boolean>(false);
+  const isError = ref<boolean>(false);
+
   const perPage = 9;
   const page = 1;
   const favorite = ref<OneImage[]>([]);
   const imagesList = ref<Image[]>([]);
 
-  async function getRandomImage() {
-    const randomPage = Math.random();
+  const getRandomImage = async () => {
+    isLoaded.value = true;
+    isError.value = false;
+    try {
+      const randomPage = Math.floor(Math.random() * 10) + 1;
 
-    const res = await api.images.list({ per_page: perPage });
+      const res = await api.images.list({
+        page: randomPage,
+        per_page: perPage,
+      });
 
-    imagesList.value = res;
-  }
+      imagesList.value = res;
+    } catch (error) {
+      isError.value = true;
+    } finally {
+      isLoaded.value = false;
+    }
+  };
 
-  async function searchByQuery(value: string) {
-    const { results } = await api.images.searchImages({
-      page: page,
-      per_page: perPage,
-      query: value,
-    });
-    imagesList.value = results;
-  }
+  const searchByQuery = async (value: string) => {
+    isLoaded.value = true;
+    isError.value = false;
+    try {
+      const { results } = await api.images.searchImages({
+        page: page,
+        per_page: perPage,
+        query: value,
+      });
+      imagesList.value = results;
+    } catch (error) {
+      isError.value = true;
+    } finally {
+      isLoaded.value = false;
+    }
+  };
 
-  function putFavorite(value: OneImage) {
+  const putFavorite = (value: OneImage) => {
     favorite.value.push(value);
-  }
+  };
 
-  function deleteFavorite(value: OneImage, index: number) {
+  const deleteFavorite = (value: OneImage, index: number) => {
     favorite.value.splice(index, 1);
-  }
+  };
 
   return {
     favorite,
@@ -52,5 +74,7 @@ export const useImageStore = defineStore('images', () => {
     searchByQuery,
     putFavorite,
     deleteFavorite,
+    isLoaded,
+    isError,
   };
 });

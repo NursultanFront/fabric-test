@@ -96,19 +96,14 @@ watch(
     }
   }
 
-  &__logo--main {
-  }
-
-  &__logo--other {
+  &__logo {
+    display: flex;
   }
 
   &__nav {
     & > * {
       color: var(--vt-c-white);
     }
-  }
-
-  &__favorite {
   }
 }
 
@@ -120,6 +115,50 @@ watch(
     display: flex;
     align-items: center;
     gap: 9px;
+  }
+}
+</style>
+
+<style scoped lang="scss">
+@media (max-width: 1024px) {
+  .header {
+    &__wrapper {
+      &--main {
+        padding: 24px 0;
+      }
+    }
+
+    &__logo {
+      img {
+        width: 150px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    &__logo {
+      img {
+        width: 100px;
+      }
+    }
+  }
+
+  .nav {
+    & span {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .header {
+    &__logo {
+      img {
+        width: 84px;
+      }
+    }
   }
 }
 </style>

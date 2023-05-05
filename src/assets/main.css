@@ -32,3 +32,34 @@
   height: 16px;
   background-color: #c4c4c4;
 }
+
+@media (max-width: 1024px) {
+  .grid-wrapper {
+    gap: 20px;
+  }
+
+  .grid-wrapper__item {
+    height: 380px;
+  }
+
+  .app-grey-bottom {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-wrapper {
+    gap: 15px;
+  }
+
+  .grid-wrapper__item {
+    grid-column: span 6 / span 6;
+  }
+}
+
+@media (max-width: 576px) {
+  .grid-wrapper__item {
+    grid-column: span 12 / span 12;
+    height: 311px;
+  }
+}

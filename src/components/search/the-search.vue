@@ -1,5 +1,6 @@
 <template>
   <section class="search">
+    <div class="search__back-black"></div>
     <div class="container">
       <div class="search__wrapper">
         <form class="search__form form" @submit.prevent="onSubmit">
@@ -10,7 +11,7 @@
             name="search"
             placeholder="Поиск"
           />
-          <button class="form__btn" type="submit">Поиск</button>
+          <button class="form__btn" type="submit"><LoupeIcon /></button>
         </form>
       </div>
     </div>
@@ -20,19 +21,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useImageStore } from '@/stores/images';
+import LoupeIcon from '@/components/icons/LoupeIcon.vue';
 
 const { searchByQuery } = useImageStore();
 
 const searchValue = ref<string>('');
 
 async function onSubmit() {
-  const value: string = searchValue.value;
-  await searchByQuery(value);
+  await searchByQuery(searchValue.value);
 }
 </script>
 
 <style scoped lang="scss">
 .search {
+  position: relative;
   background-image: url('@/assets/background-search.png');
   background-repeat: no-repeat;
   background-position: center;
@@ -44,7 +46,14 @@ async function onSubmit() {
     padding: 92px 0 106px;
   }
 
-  &__form {
+  &__back-black::before {
+    position: absolute;
+    content: '';
+    background: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 }
 
@@ -56,10 +65,25 @@ async function onSubmit() {
     width: 100%;
   }
   &__btn {
+    display: flex;
     position: absolute;
     top: 50%;
     right: 34px;
     transform: translateY(-50%);
   }
+}
+</style>
+
+<style scoped lang="scss">
+@media (max-width: 1024px) {
+}
+
+@media (max-width: 768px) {
+  .form {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
 }
 </style>
