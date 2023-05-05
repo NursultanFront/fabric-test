@@ -84,7 +84,7 @@ onMounted(async () => {
     <div class="container">
       <div class="one-image__wrapper">
         <div class="one-image__header">
-          <div class="loading" v-if="store.isLoaded">Loading</div>
+          <div v-if="store.isLoaded" class="loading" >Loading</div>
           <div
             v-else-if="!store.isError && !store.isLoaded"
             class="one-image__box"
@@ -93,7 +93,7 @@ onMounted(async () => {
             <h2>{{ imageItem.username }}</h2>
             <a :href="imageItem.portfolioLink">@{{ imageItem.socials }}</a>
           </div>
-          <div class="error" v-else-if="store.isError">Error</div>
+          <div v-else-if="store.isError" class="error" >Error</div>
 
           <div class="one-image__action">
             <button
