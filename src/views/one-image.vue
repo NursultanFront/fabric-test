@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref } from 'vue';
 import { api } from '@/api/indext';
 
 import { useImageStore, type OneImage } from '@/stores/images';
 import FavoriteBlackIcon from '@/components/icons/FavoriteBlackIcon.vue';
 import FavoriteYellowIcon from '@/components/icons/FavoriteYellowIcon.vue';
-import { RouterLink } from 'vue-router';
+import DownloadIcon from '@/components/icons/DownloadIcon.vue';
+
+import axios from 'axios';
 
 interface Props {
   id: string;
@@ -25,6 +27,42 @@ const imageItem = ref<OneImage>({
   isFavorite: false,
 });
 
+function checkFavorite(value: OneImage) {
+  const index = store.favorite.findIndex((item) => item.id === value.id);
+  if (index === -1) {
+    imageItem.value.isFavorite = true;
+    store.putFavorite(imageItem.value);
+  } else {
+    imageItem.value.isFavorite = false;
+    store.deleteFavorite(imageItem.value, index);
+  }
+}
+
+const downloadPhoto = async () => {
+  try {
+    const response = await axios.get(
+      `https://api.unsplash.com/photos/${imageItem.value.id}/download`,
+      {
+        headers: {
+          Authorization: `Client-ID ${import.meta.env.VITE_API_KEY}`,
+        },
+        responseType: 'blob',
+      }
+    );
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.style.display = 'none';
+    link.href = url;
+    link.setAttribute('download', `unsplash_photo_${imageItem.value.id}.jpg`);
+    document.body.appendChild(link);
+    link.click();
+    URL.revokeObjectURL(url);
+    link.remove();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 onMounted(async () => {
   const res = await api.images.oneImage(props.id);
 
@@ -36,6 +74,7 @@ onMounted(async () => {
     id: res.id,
     userThumbnail: res.user.profile_image.medium,
     portfolioLink: res.user.social.portfolio_url ?? '',
+    isFavorite: store.favorite.some((item) => item.isFavorite),
   };
 });
 </script>
@@ -54,20 +93,16 @@ onMounted(async () => {
           <div class="one-image__action">
             <button
               class="one-image__favorite-btn"
-              @click="
-                () => {
-                  imageItem.isFavorite = true;
-                  store.putFavorite(imageItem);
-                }
-              "
+              @click="checkFavorite(imageItem)"
             >
               <FavoriteBlackIcon v-if="!imageItem.isFavorite" />
               <FavoriteYellowIcon
                 v-else-if="imageItem.isFavorite"
               ></FavoriteYellowIcon>
             </button>
-            <button class="one-image__download">
-              <a :href="imageItem.download"> Загрузить</a>
+            <button class="one-image__download" @click="downloadPhoto">
+              <DownloadIcon />
+              <span> Download</span>
             </button>
           </div>
         </div>
@@ -130,6 +165,12 @@ onMounted(async () => {
     }
   }
 
+  &__action {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
   &__favorite-btn {
     display: flex;
     align-items: center;
@@ -138,6 +179,25 @@ onMounted(async () => {
     background-color: #ffffff;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
     border-radius: 8px;
+  }
+
+  &__download {
+    padding: 7px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #fff200;
+    border: 1px solid #fff200;
+
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+
+    span {
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 23px;
+      color: var(--vt-c-black);
+    }
   }
 }
 </style>

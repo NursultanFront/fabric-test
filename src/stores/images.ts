@@ -38,13 +38,19 @@ export const useImageStore = defineStore('images', () => {
   }
 
   function putFavorite(value: OneImage) {
-    const index = favorite.value.findIndex((item) => item.id === value.id);
-    if (index === -1) {
-      favorite.value.push(value);
-    } else {
-      favorite.value.splice(index, 1);
-    }
+    favorite.value.push(value);
   }
 
-  return { favorite, getRandomImage, imagesList, searchByQuery, putFavorite };
+  function deleteFavorite(value: OneImage, index: number) {
+    favorite.value.splice(index, 1);
+  }
+
+  return {
+    favorite,
+    getRandomImage,
+    imagesList,
+    searchByQuery,
+    putFavorite,
+    deleteFavorite,
+  };
 });

@@ -19,7 +19,8 @@
           </RouterLink>
 
           <RouterLink to="/favorite" class="nav__link">
-            <FavoriteWhiteIcon />
+            <FavoriteWhiteIcon v-if="!isFavorite" />
+            <FavoriteYellowIcon v-else />
             <span>Избранное</span>
           </RouterLink>
         </nav>
@@ -38,6 +39,7 @@ import { Routes } from '@/router/route';
 import Search from '../search/the-search.vue';
 
 import FavoriteWhiteIcon from '../icons/FavoriteWhiteIcon.vue';
+import FavoriteYellowIcon from '@/components/icons/FavoriteYellowIcon.vue';
 import LoupeWhite from '../icons/LoupeWhite.vue';
 
 const route = useRoute();
@@ -48,22 +50,29 @@ const otherWidth = 112;
 const widthLogo = ref<number>(0);
 const isSearch = ref<boolean>(false);
 const isGrayLine = ref<boolean>(true);
+const isFavorite = ref<boolean>(false);
 
-function headerKit(width: number, search: boolean, gray: boolean) {
+function headerKit(
+  width: number,
+  search: boolean,
+  gray: boolean,
+  fav: boolean
+) {
   widthLogo.value = width;
   isSearch.value = search;
   isGrayLine.value = gray;
+  isFavorite.value = fav;
 }
 
 watch(
   () => route.name,
   (value) => {
     if (value == Routes.ONEIMAGE) {
-      headerKit(otherWidth, false, false);
+      headerKit(otherWidth, false, false, false);
     } else if (value == Routes.HOME) {
-      headerKit(mainWidth, true, true);
-    } else {
-      headerKit(otherWidth, false, true);
+      headerKit(mainWidth, true, true, false);
+    } else if (value == Routes.FAVORITE) {
+      headerKit(otherWidth, false, true, true);
     }
   }
 );

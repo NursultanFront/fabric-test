@@ -12,7 +12,11 @@
             v-for="item of favorite"
             :key="item.id"
           >
-            <img :src="item.img" :alt="item.username" />
+            <RouterLink
+              :to="{ name: Routes.ONEIMAGE, params: { id: item.id } }"
+            >
+              <img :src="item.img" :alt="item.username" />
+            </RouterLink>
           </li>
         </ul>
       </div>
@@ -21,6 +25,7 @@
 </template>
 
 <script setup lang="ts">
+import { Routes } from '@/router/route';
 import { useImageStore } from '@/stores/images';
 
 const { favorite } = useImageStore();
