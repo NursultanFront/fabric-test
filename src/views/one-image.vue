@@ -123,13 +123,13 @@ onMounted(async () => {
 
         <div class="one-image__content">
           <img
-            v-if="!store.isError && !store.isLoaded"
+            v-if="!isError && !isLoaded"
             :src="imageItem.img"
             alt="image"
           />
 
-          <p class="loading" v-else-if="store.isLoaded">Loading</p>
-          <p class="Error" v-else-if="store.isError">Error</p>
+          <p class="loading" v-else-if="isLoaded">Loading</p>
+          <p class="Error" v-else-if="isError">Error</p>
         </div>
       </div>
     </div>
