@@ -1,3 +1,3 @@
-# Тестовое задание для компании Fabric Factory
+# Пет проект где вы можете скачать фотографии и добавить их в избранное
 
-https://fabric-test-kz.netlify.app/
+https://art-gallery-san-francisco.netlify.app/
