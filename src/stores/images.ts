@@ -14,6 +14,7 @@ interface ImageStoreState {
   isSearch: boolean;
   totalNum: number;
   totalPageNum: number;
+  searchText: string;
 }
 
 export interface OneImage {
@@ -42,6 +43,7 @@ export const useImageStore = defineStore('images', {
     isSearch: false,
     totalNum: 1,
     totalPageNum: 1,
+    searchText: '',
   }),
 
   actions: {
@@ -66,16 +68,16 @@ export const useImageStore = defineStore('images', {
       }
     },
 
-    async searchByQuery(value: string) {
+    async searchByQuery(page?: number) {
       try {
         this.isLoaded = true;
         this.isError = false;
         this.isEmpty = false;
 
         const { results, total, total_pages } = await api.images.searchImages({
-          page: this.page,
+          page: page ?? this.page,
           per_page: this.perPage,
-          query: value,
+          query: this.searchText,
         });
 
         if (results.length === 0) {

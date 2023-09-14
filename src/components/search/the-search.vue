@@ -5,7 +5,7 @@
       <div class="search__wrapper">
         <form class="search__form form" @submit.prevent="onSubmit">
           <input
-            v-model="searchValue"
+            v-model="store.searchText"
             class="form__input"
             type="text"
             name="search"
@@ -19,17 +19,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useImageStore } from '@/stores/images';
 import LoupeIcon from '@/components/icons/LoupeIcon.vue';
 
-const { searchByQuery } = useImageStore();
+const store = useImageStore();
 
-const searchValue = ref<string>('');
-
-async function onSubmit() {
-  await searchByQuery(searchValue.value);
-}
+const onSubmit = async () => {
+  await store.searchByQuery();
+};
 </script>
 
 <style scoped lang="scss">

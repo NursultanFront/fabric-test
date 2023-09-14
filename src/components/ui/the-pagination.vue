@@ -3,15 +3,29 @@
     <button
       class="pagination__button"
       :disabled="props.currentPage === firstPageNumber"
+      @click="emit('previous')"
     >
       prev
     </button>
     <div>...</div>
-    <button v-for="item in listPage" :key="item">
+    <button
+      v-for="item in listPage"
+      :key="item"
+      @click="emit('goToPage', item)"
+    >
       {{ item }}
     </button>
     <div>...</div>
-    <button class="pagination__button" :disabled="props.isLastPage">go</button>
+    <button @click="emit('goToPage', props.totalPage)">
+      {{ props.totalPage }}
+    </button>
+    <button
+      class="pagination__button"
+      :disabled="props.isLastPage"
+      @click="emit('next')"
+    >
+      next
+    </button>
   </div>
 </template>
 
@@ -26,6 +40,12 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+
+const emit = defineEmits<{
+  (e: 'next'): void;
+  (e: 'previous'): void;
+  (e: 'goToPage', page: number): void;
+}>();
 
 const maxPaginationNumber = 5;
 const firstPageNumber = 1;

@@ -29,6 +29,9 @@
         :is-last-page="isLastPage"
         :total="total"
         :total-page="totalPage"
+        @next="next"
+        @previous="previous"
+        @go-to-page="goToPage"
       />
     </div>
   </main>
@@ -41,6 +44,7 @@ import ThePagintaion from '@/components/ui/the-pagination.vue';
 import { Routes } from '@/router/route';
 import { RouterLink } from 'vue-router';
 import { usePagination } from '@/composable/pagination';
+import { watch } from 'vue';
 
 interface Props {
   list: Image[];
@@ -62,6 +66,18 @@ const { currentPage, isLastPage, next, previous, total, totalPage } =
   );
 
 const props = defineProps<Props>();
+
+const goToPage = (page: number) => {
+  store.page = page;
+  store.searchByQuery(page);
+};
+
+watch(
+  () => currentPage.value,
+  async () => {
+    await store.searchByQuery(currentPage.value);
+  }
+);
 </script>
 
 <style scoped lang="scss">
