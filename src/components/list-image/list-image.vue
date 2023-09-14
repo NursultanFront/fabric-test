@@ -2,13 +2,13 @@
   <main class="list-image">
     <div class="container">
       <ul
+        v-if="!props.error && !props.loading && !props.emptyList"
         class="list-image__wrapper grid-wrapper"
-        v-if="!props.error && !props.loading"
       >
         <li
-          class="list-image__item grid-wrapper__item"
           v-for="item of props.list"
           :key="item.id"
+          class="list-image__item grid-wrapper__item"
         >
           <RouterLink :to="{ name: Routes.ONEIMAGE, params: { id: item.id } }">
             <img
@@ -20,6 +20,9 @@
       </ul>
       <p v-else-if="props.error" class="list-image__wrapper">Error</p>
       <p v-else-if="props.loading" class="list-image__wrapper">Loading</p>
+      <p v-else-if="props.emptyList" class="list-image__wrapper">
+        Ничего не найдено
+      </p>
     </div>
   </main>
 </template>
@@ -33,6 +36,7 @@ interface Props {
   list: Image[];
   loading: boolean;
   error: boolean;
+  emptyList: boolean;
 }
 
 const props = defineProps<Props>();

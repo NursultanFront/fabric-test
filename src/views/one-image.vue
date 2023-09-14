@@ -53,6 +53,7 @@ const downloadPhoto = async () => {
     );
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
+
     link.style.display = 'none';
     link.href = url;
     link.setAttribute('download', `unsplash_photo_${imageItem.value.id}.jpg`);
@@ -122,11 +123,7 @@ onMounted(async () => {
         </div>
 
         <div class="one-image__content">
-          <img
-            v-if="!isError && !isLoaded"
-            :src="imageItem.img"
-            alt="image"
-          />
+          <img v-if="!isError && !isLoaded" :src="imageItem.img" alt="image" />
 
           <p class="loading" v-else-if="isLoaded">Loading</p>
           <p class="Error" v-else-if="isError">Error</p>

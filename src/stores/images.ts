@@ -17,6 +17,7 @@ export interface OneImage {
 export const useImageStore = defineStore('images', () => {
   const isLoaded = ref<boolean>(false);
   const isError = ref<boolean>(false);
+  const isEmpty = ref<boolean>(false);
 
   const perPage = 9;
   const page = 1;
@@ -45,12 +46,18 @@ export const useImageStore = defineStore('images', () => {
   const searchByQuery = async (value: string) => {
     isLoaded.value = true;
     isError.value = false;
+    isEmpty.value = false;
     try {
       const { results } = await api.images.searchImages({
         page: page,
         per_page: perPage,
         query: value,
       });
+
+      if (results.length === 0) {
+        isEmpty.value = true;
+      }
+
       imagesList.value = results;
     } catch (error) {
       isError.value = true;
@@ -76,5 +83,6 @@ export const useImageStore = defineStore('images', () => {
     deleteFavorite,
     isLoaded,
     isError,
+    isEmpty,
   };
 });
