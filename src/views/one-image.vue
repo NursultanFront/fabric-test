@@ -36,7 +36,7 @@ function checkFavorite(value: OneImage) {
     store.putFavorite(imageItem.value);
   } else {
     imageItem.value.isFavorite = false;
-    store.deleteFavorite(imageItem.value, index);
+    store.deleteFavorite(index);
   }
 }
 

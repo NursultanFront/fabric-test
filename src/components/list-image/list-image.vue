@@ -23,14 +23,24 @@
       <p v-else-if="props.emptyList" class="list-image__wrapper">
         Ничего не найдено
       </p>
+      <ThePagintaion
+        v-if="store.isSearch"
+        :current-page="currentPage"
+        :is-last-page="isLastPage"
+        :total="total"
+        :total-page="totalPage"
+      />
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
 import type { Image } from '@/api/image-rest/type';
+import { useImageStore } from '@/stores/images';
+import ThePagintaion from '@/components/ui/the-pagination.vue';
 import { Routes } from '@/router/route';
 import { RouterLink } from 'vue-router';
+import { usePagination } from '@/composable/pagination';
 
 interface Props {
   list: Image[];
@@ -38,6 +48,18 @@ interface Props {
   error: boolean;
   emptyList: boolean;
 }
+
+const store = useImageStore();
+
+const { currentPage, isLastPage, next, previous, total, totalPage } =
+  usePagination(
+    {
+      currentPage: 1,
+      total: store.totalNum,
+      totalPage: store.totalPageNum,
+    },
+    store
+  );
 
 const props = defineProps<Props>();
 </script>
